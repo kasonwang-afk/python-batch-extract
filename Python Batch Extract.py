@@ -8,7 +8,7 @@ safe_target = target_show.replace(' ', '').replace('/', '_').replace('\\', '_')
 timestamp = datetime.now().strftime('%Y%m%d_%H%M')
 
 # ✅ NEW OUTPUT LOCATION
-output_dir = r'C:\Users\kason.wang\OneDrive - 大廣國際廣告股份有限公司\桌面\Search Result'
+output_dir = r'C:\Users\kason.wang\OneDrive - 大廣國際廣告股份有限公司\桌面\Search Result\Show Base'
 output_file = os.path.join(
     output_dir,
     f"{safe_target}_summary_{timestamp}.xlsx"

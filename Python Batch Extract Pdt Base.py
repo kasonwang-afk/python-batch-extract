@@ -7,11 +7,13 @@ root_dir = r'C:\Users\kason.wang\OneDrive - 大廣國際廣告股份有限公司
 target_keyword = 'DHA'  # 🔍 Change this to the keyword you want to match in file names
 safe_target = target_keyword.replace(' ', '').replace('/', '_').replace('\\', '_')
 timestamp = datetime.now().strftime('%Y%m%d_%H%M')
-output_file = os.path.join(
-    root_dir,
-    f"{safe_target}_filename_summary_{timestamp}.xlsx"
-)
 
+# ✅ NEW OUTPUT LOCATION
+output_dir = r'"C:\Users\kason.wang\OneDrive - 大廣國際廣告股份有限公司\桌面\Search Result\Product base"'
+output_file = os.path.join(
+    output_dir,
+    f"{safe_target}_summary_{timestamp}.xlsx"
+)
 # 📊 Desired output columns
 desired_columns = [
     'Source_File', 'Sheet',
