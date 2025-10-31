@@ -6,10 +6,14 @@ root_dir = r'C:\Users\kason.wang\OneDrive - 大廣國際廣告股份有限公司
 target_show = '好運來'
 safe_target = target_show.replace(' ', '').replace('/', '_').replace('\\', '_')
 timestamp = datetime.now().strftime('%Y%m%d_%H%M')
+
+# ✅ NEW OUTPUT LOCATION
+output_dir = r'C:\Users\kason.wang\OneDrive - 大廣國際廣告股份有限公司\桌面\Search Result'
 output_file = os.path.join(
-    root_dir,
+    output_dir,
     f"{safe_target}_summary_{timestamp}.xlsx"
 )
+
 
 
 # 📊 Desired output columns

@@ -4,12 +4,12 @@ from datetime import datetime
 
 # 📁 CONFIGURATION
 root_dir = r'C:\Users\kason.wang\OneDrive - 大廣國際廣告股份有限公司\桌面\DATA\Maybe Python'
-target_keyword = 'DHA'
+target_keyword = 'DHA'  # 🔍 Change this to the keyword you want to match in file names
 safe_target = target_keyword.replace(' ', '').replace('/', '_').replace('\\', '_')
 timestamp = datetime.now().strftime('%Y%m%d_%H%M')
 output_file = os.path.join(
     root_dir,
-    f"{safe_target}_filebased_summary_{timestamp}.xlsx"
+    f"{safe_target}_filename_summary_{timestamp}.xlsx"
 )
 
 # 📊 Desired output columns
@@ -26,25 +26,30 @@ all_matches = []
 # 🔍 Traverse folders and files
 for foldername, subfolders, filenames in os.walk(root_dir):
     for filename in filenames:
-        if (filename.endswith('.xlsx') or filename.endswith('.xls')) and target_keyword in filename:
-            file_path = os.path.join(foldername, filename)
-            try:
-                xls = pd.ExcelFile(file_path)
-                for sheet_name in xls.sheet_names:
-                    df = xls.parse(sheet_name)
-                    df.columns = df.columns.astype(str).str.replace('\n', '', regex=True).str.strip()
+        if filename.endswith('.xlsx') or filename.endswith('.xls'):
+            if target_keyword in filename:  # ✅ Match based on file name
+                file_path = os.path.join(foldername, filename)
+                try:
+                    xls = pd.ExcelFile(file_path)
+                    for sheet_name in xls.sheet_names:
+                        df = xls.parse(sheet_name)
 
-                    if not df.empty:
+                        # 🧼 Normalize column names
+                        df.columns = df.columns.astype(str).str.replace('\n', '', regex=True).str.strip()
+
+                        # ✅ Add metadata
                         df = df.copy()
                         df.loc[:, 'Source_File'] = filename
                         df.loc[:, 'Sheet'] = sheet_name
                         all_matches.append(df)
-            except Exception as e:
-                print(f"❌ Error reading {file_path}: {e}")
+                except Exception as e:
+                    print(f"❌ Error reading {file_path}: {e}")
 
 # 🧾 Combine and export
 if all_matches:
     result_df = pd.concat(all_matches, ignore_index=True)
+
+    # 🔍 Inspect available columns
     print("🧾 Columns in result_df:", result_df.columns.tolist())
 
     # ✅ Select only desired columns that exist
@@ -55,4 +60,4 @@ if all_matches:
     result_df.to_excel(output_file, index=False)
     print(f"✅ Extracted {len(result_df)} rows to {output_file}")
 else:
-    print("⚠️ No matching files found with keyword in filename.")
+    print("⚠️ No matching rows found.")
